@@ -1,0 +1,37 @@
+version: '5.1.0'
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: fileServer
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: fileServer_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: server_admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: fileServer_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@lab.ru
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+
+volumes:
+  pg_data:
+  pgadmin_data:
+
+
